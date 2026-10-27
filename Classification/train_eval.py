@@ -80,3 +80,26 @@ def scores(labels, pred):
             by_attack[attack] = float(pred[rows].mean())
     result["recall_by_attack"] = by_attack
     return result
+
+def run(X, labels, train, test, features, seed, depth):
+    result = {
+        "n_train": int(train.sum()),
+        "n_test": int(test.sum()),
+        "train_counts": labels[train].value_counts().to_dict(),
+        "test_counts": labels[test].value_counts().to_dict(),
+    }
+    y_train = (labels[train] != "BENIGN").to_numpy()
+    tree = DecisionTreeClassifier(max_depth=depth, random_state=seed)
+    forest = RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=seed)
+    for name, model in [("tree", tree), ("forest", forest)]:
+        model.fit(X.loc[train, features], y_train)
+        pred = model.predict(X.loc[test, features]).astype(bool)
+        result[name] = scores(labels[test], pred)
+    return result, tree
+
+
+def summary_line(result):
+    tree = result["tree"]
+    forest = result["forest"]
+    by_attack = " ".join(f"{a}={v:.3f}" for a, v in tree["recall_by_attack"].items())
+    return (f"tree P={tree['precision']:.4f} R={tree['recall']:.4f} FPR={tree['false_positive_rate']:.5f} [{by_attack}] | "f"forest P={forest['precision']:.4f} R={forest['recall']:.4f} FPR={forest['false_positive_rate']:.5f}")
