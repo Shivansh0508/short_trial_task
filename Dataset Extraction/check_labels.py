@@ -1,4 +1,4 @@
-@AI
+#@AI
 import argparse
 import zipfile
 from pathlib import Path
