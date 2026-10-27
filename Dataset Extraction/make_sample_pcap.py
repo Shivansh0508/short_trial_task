@@ -1,6 +1,6 @@
+# @AI
 import argparse
 from pathlib import Path
-
 import dpkt
 import pandas as pd
 from dpkt.utils import inet_to_str
@@ -22,11 +22,9 @@ def flag_letters(flags):
             letters += letter
     return letters or "-"
 
-
 flows = pd.read_parquet(args.labelled)
 flows = flows[flows["label"] != "UNCLEAR"]
 chosen = flows.groupby("label").sample(n=args.per_class, random_state=args.seed)
-
 picked = {}
 for flow in chosen.itertuples():
     src = (flow.src_ip, flow.src_port)
