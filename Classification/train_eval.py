@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier, export_text
 
 #AI
-ef first_n_features(flows, packets, n):
+def first_n_features(flows, packets, n):
     p = packets[packets["idx"] < n]
     p["fwd"] = p["dir"] == 0
     p["bwd"] = p["dir"] == 1
@@ -21,7 +21,6 @@ ef first_n_features(flows, packets, n):
         p[name] = (p["tcp_flags"] & bit) > 0
     p["t_us"] = (p["ts"] * 1e6).round().astype("int64")
     p["gap_us"] = p.groupby("flow_id")["t_us"].diff()
-
     g = p.groupby("flow_id")
     f = pd.DataFrame(index=flows["flow_id"])
     f["n_pkts"] = g.size()
@@ -46,3 +45,17 @@ ef first_n_features(flows, packets, n):
     f["proto"] = flows["proto"].values
     f["dst_port"] = flows["dst_port"].values
     return f.reset_index(drop=True)
+
+def temporal_split(flows):
+    train = np.zeros(len(flows), dtype=bool)
+    for label, group in flows.groupby("label"):
+        group = group.sort_values("start_ts", kind="stable")
+        n_train = round(0.7 * len(group))
+        train[group.index[:n_train]] = True
+    return train
+
+def random_split(flows, seed):
+    train_rows, test_rows = train_test_split(flows.index, train_size=0.7, stratify=flows["label"], random_state=seed)
+    train = np.zeros(len(flows), dtype=bool)
+    train[train_rows] = True
+    return train
