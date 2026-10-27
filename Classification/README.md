@@ -91,15 +91,6 @@ What the results show:
 - One packet is not enough (FPR 6.2%). Two packets already work well, three are worse than two (explained
   by `inspect_results.py`), and from four packets on the results stay about the same.
 
-Outputs:
-- `results/metrics.json`: every number above, plus train and test counts and the confusion counts
-  (tp, fp, fn, tn) of every run.
-- `results/tree_main_N4.txt`: the main tree as readable if/else rules, with the number of benign and
-  attack training flows that reach each leaf. The tree has 33 leaves, and forward payload bytes carries
-  almost all of its decisions (importance 0.91), followed by duration (0.07).
-
-Options: `--main-n` (default 4), `--depth` (default 6), `--seed` (default 37), `--sweep` (default
-`1,2,3,4,6,8,12,16`) and `--out` (default `results`). A full run takes about a minute.
 
 ## 2. `inspect_results.py`: why the numbers come out this way
 
@@ -126,5 +117,3 @@ This script uses the same data, seed and tree settings as the main experiment, a
 5. **Precision if attacks were rarer.** The test set is about half attacks, which flatters precision. With
    the main tree's recall and FPR, precision would be 0.999 if half of all flows were attacks, 0.988 at 10%,
    0.879 at 1% and 0.419 at 0.1%.
-
-The script prints its results and writes no files. It reads `results/metrics.json` for check 5.
