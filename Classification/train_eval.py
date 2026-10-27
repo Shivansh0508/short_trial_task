@@ -59,3 +59,24 @@ def random_split(flows, seed):
     train = np.zeros(len(flows), dtype=bool)
     train[train_rows] = True
     return train
+
+def scores(labels, pred):
+    actual = (labels != "BENIGN").to_numpy()
+    tp = int((actual & pred).sum())
+    fp = int((~actual & pred).sum())
+    fn = int((actual & ~pred).sum())
+    tn = int((~actual & ~pred).sum())
+    result = {
+        "precision": tp / max(tp + fp, 1),
+        "recall": tp / max(tp + fn, 1),
+        "false_positive_rate": fp / max(fp + tn, 1),
+        "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+    }
+    result["f1"] = 2 * result["precision"] * result["recall"] / max(result["precision"] + result["recall"], 1e-12)
+    by_attack = {}
+    for attack in ATTACKS:
+        rows = (labels == attack).to_numpy()
+        if rows.any():
+            by_attack[attack] = float(pred[rows].mean())
+    result["recall_by_attack"] = by_attack
+    return result
