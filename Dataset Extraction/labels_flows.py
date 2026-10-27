@@ -22,3 +22,25 @@ def get_label(src, dst, start):
             return "DDoS"
         return "UNCLEAR"
     return "BENIGN"
+
+flows = pd.read_parquet(args.flows)
+local_time = pd.to_datetime(flows["start_ts"], unit="s") - pd.Timedelta(hours=3)
+start_hhmm = local_time.dt.strftime("%H:%M")
+
+labels = []
+for src, dst, start in zip(flows["src_ip"], flows["dst_ip"], start_hhmm):
+    labels.append(get_label(src, dst, start))
+flows["label"] = labels
+flows.to_parquet(args.out, index=False)
+
+@AI
+print(f"{len(flows):,} flows, local time {local_time.min():%H:%M:%S} -> {local_time.max():%H:%M:%S}")
+for label, group in flows.groupby("label"):
+    times = local_time[group.index]
+    print(f"{label:10} {len(group):>8,} flows   first {times.min():%H:%M:%S}   last {times.max():%H:%M:%S}   "
+          f"median packets {group['n_pkts_total'].median()}")
+
+attack = flows[flows["label"].isin(["PortScan", "DDoS", "UNCLEAR"])]
+print("\n172.16.0.1 <-> 192.168.10.50 flows by local hour:")
+print(pd.crosstab(local_time[attack.index].dt.hour.rename("hour"), attack["label"]))
+print(f"\nwrote {args.out}")
