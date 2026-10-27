@@ -10,3 +10,12 @@ z = zipfile.ZipFile(zip_path)
 for name in z.namelist():
     if "Friday" not in name:
         continue
+
+    df = pd.read_csv(z.open(name))
+    df.columns = df.columns.str.strip()
+    df = df.dropna(subset=["Label"])
+    src = df["Source IP"]
+    dst = df["Destination IP"]
+    bot = (src.isin(bot_victims) & (dst == bot_server)) | (dst.isin(bot_victims) & (src == bot_server))
+    attack = ((src == attacker) & (dst == victim)) | ((src == victim) & (dst == attacker))
+
