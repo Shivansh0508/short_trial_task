@@ -10,3 +10,12 @@ Notes: understanding the pipeline
 - **DDoS** (flow 505139, 172.16.0.1 → 192.168.10.50, port 80): a full handshake (SYN, SYN-ACK, ACK), then **one small packet carrying 20 bytes of data**, all within about 1 ms.
 
 **Takeaway:** Bot and PortScan look almost identical; the main difference is the port. DDoS looks like a normal web visit except for its tiny message and its speed.
+
+## Step 2: Why CIC's labels can't be used as-is
+
+- Connections between the 5 infected PCs and the command server (port 8080) are labelled **Bot** in the morning file (1,962) but **BENIGN** in the afternoon files: **350** (DDoS file) + **623** (PortScan file) = **973**. Same machines, same port, same rhythm; only the file changed.
+- During the DDoS, 31,340 attacker ↔ victim connections are labelled BENIGN, plus 960 during the scans.
+- Timestamps use a 12-hour clock without AM/PM, to the minute only ("3:56" means 15:56).
+- The spreadsheet's numbers are computed over whole connections, and its tool cuts traffic into connections differently (about 159,000 rows vs our 95,683 DDoS connections), so its labels can't be copied one-to-one.
+
+**So:** labels were re-applied from CIC's published attack schedule, and the spreadsheet was used only as a cross-check.
