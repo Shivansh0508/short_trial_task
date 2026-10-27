@@ -1,6 +1,6 @@
 # Dataset Extraction
 
-@notes from AI
+> @notes from AI
 
 These six scripts turn the raw CIC-IDS2017 Friday capture into the labelled flow dataset in `datasets/`,
 which the detector is trained on. They are numbered in the order they run; scripts 2, 3 and 4 each read
