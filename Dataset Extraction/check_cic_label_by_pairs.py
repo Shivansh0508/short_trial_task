@@ -19,3 +19,20 @@ for name in z.namelist():
     bot = (src.isin(bot_victims) & (dst == bot_server)) | (dst.isin(bot_victims) & (src == bot_server))
     attack = ((src == attacker) & (dst == victim)) | ((src == victim) & (dst == attacker))
 
+    print(f"\n=== {name.split('/')[-1]}")
+    print("  bot victim <-> 205.174.165.73 flows by CIC label:", df[bot]["Label"].value_counts().to_dict())
+    if bot.any():
+        benign_bot = df[bot & (df["Label"] == "BENIGN")]
+        if len(benign_bot) > 0:
+            first = benign_bot["Timestamp"].iloc[0]
+            last = benign_bot["Timestamp"].iloc[-1]
+            ports = benign_bot["Destination Port"].value_counts().head(3).to_dict()
+            print("    BENIGN-labelled ones: time range", first, "...", last, "| dst ports:", ports)
+        labelled_bot = df[bot & (df["Label"] == "Bot")]
+        print("    dst ports of Bot-labelled:", labelled_bot["Destination Port"].value_counts().head(3).to_dict())
+
+    print("  172.16.0.1 <-> 192.168.10.50 flows by CIC label:", df[attack]["Label"].value_counts().to_dict())
+    benign_attack = df[attack & (df["Label"] == "BENIGN")]
+    if len(benign_attack) > 0:
+        minutes = benign_attack["Timestamp"].str.split(" ").str[1]
+        print("    BENIGN-labelled ones, top minutes (12h clock):", minutes.value_counts().head(8).to_dict())
