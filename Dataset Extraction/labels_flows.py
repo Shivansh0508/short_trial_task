@@ -33,7 +33,7 @@ for src, dst, start in zip(flows["src_ip"], flows["dst_ip"], start_hhmm):
 flows["label"] = labels
 flows.to_parquet(args.out, index=False)
 
-@AI
+# @AI
 print(f"{len(flows):,} flows, local time {local_time.min():%H:%M:%S} -> {local_time.max():%H:%M:%S}")
 for label, group in flows.groupby("label"):
     times = local_time[group.index]
