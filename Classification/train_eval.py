@@ -103,3 +103,87 @@ def summary_line(result):
     forest = result["forest"]
     by_attack = " ".join(f"{a}={v:.3f}" for a, v in tree["recall_by_attack"].items())
     return (f"tree P={tree['precision']:.4f} R={tree['recall']:.4f} FPR={tree['false_positive_rate']:.5f} [{by_attack}] | "f"forest P={forest['precision']:.4f} R={forest['recall']:.4f} FPR={forest['false_positive_rate']:.5f}")
+
+
+#@AI
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("labelled")
+    parser.add_argument("packets")
+    parser.add_argument("--out", default="results")
+    parser.add_argument("--seed", type=int, default=37)
+    parser.add_argument("--main-n", type=int, default=4)
+    parser.add_argument("--depth", type=int, default=6)
+    parser.add_argument("--sweep", default="1,2,3,4,6,8,12,16")
+    args = parser.parse_args()
+    start = time.time()
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+
+    flows = pd.read_parquet(args.labelled)
+    flows = flows[flows["label"] != "UNCLEAR"].reset_index(drop=True)
+    packets = pd.read_parquet(args.packets)
+    packets = packets[packets["flow_id"].isin(flows["flow_id"])].sort_values(["flow_id", "idx"], kind="stable")
+    labels = flows["label"]
+    print(f"{len(flows):,} flows (UNCLEAR dropped): {labels.value_counts().to_dict()}")
+
+    temporal_train = temporal_split(flows)
+    random_train = random_split(flows, args.seed)
+    X = first_n_features(flows, packets, args.main_n)
+    results = {"seed": args.seed, "main_n": args.main_n, "tree_depth": args.depth, "features_main": MAIN_FEATURES}
+
+    print(f"\n[1] main: N={args.main_n}, temporal split")
+    result, tree = run(X, labels, temporal_train, ~temporal_train, MAIN_FEATURES, args.seed, args.depth)
+    print("   ", summary_line(result))
+    importance = pd.Series(tree.feature_importances_, index=MAIN_FEATURES).sort_values(ascending=False)
+    importance = importance[importance > 0]
+    result["tree_leaves"] = int(tree.get_n_leaves())
+    result["tree_importance"] = importance.round(4).to_dict()
+    results["main_temporal"] = result
+    print(f"    tree: {tree.get_n_leaves()} leaves; importance: "
+          + ", ".join(f"{name}={value:.3f}" for name, value in importance.items()))
+    tree_text = export_text(tree, feature_names=MAIN_FEATURES, show_weights=True)
+    (out / f"tree_main_N{args.main_n}.txt").write_text(tree_text)
+
+    print(f"\n[2] random stratified split, N={args.main_n}")
+    result, tree = run(X, labels, random_train, ~random_train, MAIN_FEATURES, args.seed, args.depth)
+    results["main_random"] = result
+    print("   ", summary_line(result))
+
+    print(f"\n[3] leave one attack out, N={args.main_n} (train: benign + other attacks; test: benign + held-out attack)")
+    results["leave_one_out"] = {}
+    benign = (labels == "BENIGN").to_numpy()
+    for held in ATTACKS:
+        is_held = (labels == held).to_numpy()
+        train = temporal_train & ~is_held
+        test = (~temporal_train & benign) | is_held
+        result, tree = run(X, labels, train, test, MAIN_FEATURES, args.seed, args.depth)
+        results["leave_one_out"][held] = result
+        print(f"    held out {held:<8}", summary_line(result))
+
+    print(f"\n[4] feature ablation, N={args.main_n}, temporal split")
+    results["ablation"] = {}
+    for name, features in [("behaviour_only", BEHAVIOUR), ("main_plus_fingerprint", MAIN_FEATURES + FINGERPRINT)]:
+        result, tree = run(X, labels, temporal_train, ~temporal_train, features, args.seed, args.depth)
+        results["ablation"][name] = result
+        print(f"    {name:<22}", summary_line(result))
+
+    print("\n[5] sweep over N, temporal split")
+    results["sweep"] = {}
+    for n in args.sweep.split(","):
+        n = int(n)
+        if n == args.main_n:
+            Xn = X
+        else:
+            Xn = first_n_features(flows, packets, n)
+        result, tree = run(Xn, labels, temporal_train, ~temporal_train, MAIN_FEATURES, args.seed, args.depth)
+        results["sweep"][n] = result
+        print(f"    N={n:<3}", summary_line(result))
+
+    (out / "metrics.json").write_text(json.dumps(results, indent=2))
+    print(f"\nwrote {out / 'metrics.json'}  ({time.time() - start:.0f}s)")
+
+
+if __name__ == "__main__":
+    main()
+
