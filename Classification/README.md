@@ -1,6 +1,8 @@
 
 # Classification
 
+@notes from AI
+
 These two scripts train and test the attack detector on the dataset built in `Dataset Extraction`, then
 explain the results. `train_eval.py` runs first: `inspect_results.py` reuses its feature code and reads the
 `results/metrics.json` it writes, so both files must stay in this folder.
