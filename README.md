@@ -63,6 +63,7 @@ Dataset and Intrusion Traffic Characterization", ICISSP 2018.
 ```
 ├── README.md                     this file
 ├── notes.md                      how the three attacks differ in their first packets; why CIC's labels were not used as-is
+├── COMMANDS.md                   every command exactly as it was run, in order
 ├── Dataset Extraction/           raw capture → labelled flow dataset (see its README)
 │   ├── README.md
 │   ├── check_duplicates.py
