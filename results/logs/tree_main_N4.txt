@@ -1,0 +1,97 @@
+|--- pay_fwd_sum <= 21.00
+|   |--- dur_us <= 49630.50
+|   |   |--- len_max <= 62.00
+|   |   |   |--- dst_port <= 22.50
+|   |   |   |   |--- psh <= 0.50
+|   |   |   |   |   |--- n_bwd <= 1.50
+|   |   |   |   |   |   |--- weights: [0.00, 1494.00] class: True
+|   |   |   |   |   |--- n_bwd >  1.50
+|   |   |   |   |   |   |--- weights: [2.00, 0.00] class: False
+|   |   |   |   |--- psh >  0.50
+|   |   |   |   |   |--- weights: [525.00, 0.00] class: False
+|   |   |   |--- dst_port >  22.50
+|   |   |   |   |--- iat_min_us <= 8224.00
+|   |   |   |   |   |--- fin <= 0.50
+|   |   |   |   |   |   |--- weights: [171.00, 180802.00] class: True
+|   |   |   |   |   |--- fin >  0.50
+|   |   |   |   |   |   |--- weights: [59.00, 1.00] class: False
+|   |   |   |   |--- iat_min_us >  8224.00
+|   |   |   |   |   |--- weights: [92.00, 0.00] class: False
+|   |   |--- len_max >  62.00
+|   |   |   |--- len_max <= 92.00
+|   |   |   |   |--- dur_us <= 2784.50
+|   |   |   |   |   |--- len_max <= 71.00
+|   |   |   |   |   |   |--- weights: [6.00, 2.00] class: False
+|   |   |   |   |   |--- len_max >  71.00
+|   |   |   |   |   |   |--- weights: [442.00, 0.00] class: False
+|   |   |   |   |--- dur_us >  2784.50
+|   |   |   |   |   |--- iat_max_us <= 2725.00
+|   |   |   |   |   |   |--- weights: [2.00, 8.00] class: True
+|   |   |   |   |   |--- iat_max_us >  2725.00
+|   |   |   |   |   |   |--- weights: [48.00, 2.00] class: False
+|   |   |   |--- len_max >  92.00
+|   |   |   |   |--- iat_min_us <= 72.00
+|   |   |   |   |   |--- pay_bwd_sum <= 100.00
+|   |   |   |   |   |   |--- weights: [2.00, 1.00] class: False
+|   |   |   |   |   |--- pay_bwd_sum >  100.00
+|   |   |   |   |   |   |--- weights: [3.00, 0.00] class: False
+|   |   |   |   |--- iat_min_us >  72.00
+|   |   |   |   |   |--- weights: [0.00, 10.00] class: True
+|   |--- dur_us >  49630.50
+|   |   |--- pay_fwd_sum <= 9.00
+|   |   |   |--- iat_max_us <= 35143086.00
+|   |   |   |   |--- dst_port <= 50.50
+|   |   |   |   |   |--- dur_us <= 168313.00
+|   |   |   |   |   |   |--- weights: [0.00, 1.00] class: True
+|   |   |   |   |   |--- dur_us >  168313.00
+|   |   |   |   |   |   |--- weights: [1.00, 0.00] class: False
+|   |   |   |   |--- dst_port >  50.50
+|   |   |   |   |   |--- iat_min_us <= 119.50
+|   |   |   |   |   |   |--- weights: [5224.00, 2.00] class: False
+|   |   |   |   |   |--- iat_min_us >  119.50
+|   |   |   |   |   |   |--- weights: [1476.00, 6.00] class: False
+|   |   |   |--- iat_max_us >  35143086.00
+|   |   |   |   |--- weights: [0.00, 1.00] class: True
+|   |   |--- pay_fwd_sum >  9.00
+|   |   |   |--- len_fwd_sum <= 80.00
+|   |   |   |   |--- weights: [3.00, 0.00] class: False
+|   |   |   |--- len_fwd_sum >  80.00
+|   |   |   |   |--- weights: [0.00, 100.00] class: True
+|--- pay_fwd_sum >  21.00
+|   |--- dst_port <= 8066.50
+|   |   |--- iat_min_us <= 4.50
+|   |   |   |--- dst_port <= 84.00
+|   |   |   |   |--- iat_max_us <= 7936.00
+|   |   |   |   |   |--- pay_fwd_sum <= 49.00
+|   |   |   |   |   |   |--- weights: [6.00, 0.00] class: False
+|   |   |   |   |   |--- pay_fwd_sum >  49.00
+|   |   |   |   |   |   |--- weights: [0.00, 10.00] class: True
+|   |   |   |   |--- iat_max_us >  7936.00
+|   |   |   |   |   |--- weights: [280.00, 0.00] class: False
+|   |   |   |--- dst_port >  84.00
+|   |   |   |   |--- weights: [1739.00, 0.00] class: False
+|   |   |--- iat_min_us >  4.50
+|   |   |   |--- iat_min_us <= 20.50
+|   |   |   |   |--- iat_max_us <= 941.00
+|   |   |   |   |   |--- dur_us <= 952.00
+|   |   |   |   |   |   |--- weights: [174.00, 1.00] class: False
+|   |   |   |   |   |--- dur_us >  952.00
+|   |   |   |   |   |   |--- weights: [0.00, 3.00] class: True
+|   |   |   |   |--- iat_max_us >  941.00
+|   |   |   |   |   |--- weights: [2309.00, 0.00] class: False
+|   |   |   |--- iat_min_us >  20.50
+|   |   |   |   |--- iat_min_us <= 48.50
+|   |   |   |   |   |--- pay_fwd_sum <= 63.00
+|   |   |   |   |   |   |--- weights: [153.00, 1.00] class: False
+|   |   |   |   |   |--- pay_fwd_sum >  63.00
+|   |   |   |   |   |   |--- weights: [10436.00, 0.00] class: False
+|   |   |   |   |--- iat_min_us >  48.50
+|   |   |   |   |   |--- weights: [168752.00, 0.00] class: False
+|   |--- dst_port >  8066.50
+|   |   |--- dst_port <= 8203.50
+|   |   |   |--- iat_max_us <= 33790.00
+|   |   |   |   |--- weights: [0.00, 736.00] class: True
+|   |   |   |--- iat_max_us >  33790.00
+|   |   |   |   |--- weights: [3.00, 0.00] class: False
+|   |   |--- dst_port >  8203.50
+|   |   |   |--- weights: [565.00, 0.00] class: False

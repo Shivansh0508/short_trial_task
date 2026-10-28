@@ -1,0 +1,82 @@
+First 8 packets (as captured) of 3 random flows per label, seed 37
+time is relative to flow start; -> is initiator to responder
+capture duplicates are kept here, but 'packets in total' is counted after removing them
+
+[BENIGN] flow 140957: 192.168.10.16:57552 -> 185.15.175.135:443 proto 6, 31 packets in total
+      0.000000s  ->  len=60    flags=S
+      0.148086s  <-  len=44    flags=SA
+      0.148144s  ->  len=40    flags=A
+      0.148363s  ->  len=237   flags=PA
+      0.297162s  <-  len=40    flags=A
+      0.297500s  <-  len=1500  flags=A
+      0.297533s  ->  len=40    flags=A
+      0.297724s  <-  len=1500  flags=A
+
+[BENIGN] flow 148305: 192.168.10.25:49193 -> 192.168.10.3:53 proto 17, 2 packets in total
+      0.000000s  ->  len=62    flags=-
+      0.000192s  ->  len=62    flags=-
+      0.024471s  <-  len=126   flags=-
+
+[BENIGN] flow 150390: 192.168.10.14:53526 -> 52.73.178.249:80 proto 6, 17 packets in total
+      0.000000s  ->  len=52    flags=S
+      0.051284s  <-  len=52    flags=SA
+      0.051452s  ->  len=40    flags=A
+      0.051554s  ->  len=379   flags=PA
+      0.102942s  <-  len=40    flags=A
+      0.104339s  <-  len=657   flags=PA
+      0.129680s  ->  len=40    flags=A
+     10.151273s  ->  len=41    flags=A
+
+[Bot] flow 379511: 192.168.10.8:9169 -> 205.174.165.73:8080 proto 6, 2 packets in total
+      0.000000s  ->  len=52    flags=S
+      0.000692s  <-  len=40    flags=RA
+
+[Bot] flow 400532: 192.168.10.9:9334 -> 205.174.165.73:8080 proto 6, 2 packets in total
+      0.000000s  ->  len=52    flags=S
+      0.000785s  <-  len=40    flags=RA
+
+[Bot] flow 192873: 192.168.10.5:53761 -> 205.174.165.73:8080 proto 6, 2 packets in total
+      0.000000s  ->  len=52    flags=S
+      0.000490s  <-  len=40    flags=RA
+
+[DDoS] flow 505139: 172.16.0.1:39805 -> 192.168.10.50:80 proto 6, 11 packets in total
+      0.000000s  ->  len=52    flags=S
+      0.000046s  <-  len=52    flags=SA
+      0.000862s  ->  len=40    flags=A
+      0.001077s  ->  len=60    flags=PA
+      0.001148s  <-  len=40    flags=A
+      1.654935s  <-  len=11635 flags=PA
+      1.655259s  <-  len=40    flags=FA
+      1.658505s  ->  len=40    flags=A
+
+[DDoS] flow 407962: 172.16.0.1:52141 -> 192.168.10.50:80 proto 6, 14 packets in total
+      0.000000s  ->  len=52    flags=S
+      0.000137s  <-  len=52    flags=SA
+      0.000668s  ->  len=40    flags=A
+      0.000671s  ->  len=60    flags=PA
+      0.000760s  <-  len=40    flags=A
+      0.785151s  <-  len=1500  flags=A
+      0.785202s  <-  len=5880  flags=A
+      0.785249s  <-  len=4335  flags=PA
+
+[DDoS] flow 482806: 172.16.0.1:58093 -> 192.168.10.50:80 proto 6, 13 packets in total
+      0.000000s  ->  len=52    flags=S
+      0.000050s  <-  len=52    flags=SA
+      0.011019s  ->  len=40    flags=A
+      0.011027s  ->  len=60    flags=PA
+      0.011362s  <-  len=40    flags=A
+      0.545882s  <-  len=1500  flags=A
+      0.546083s  <-  len=8800  flags=A
+      0.546254s  <-  len=1415  flags=FPA
+
+[PortScan] flow 260663: 172.16.0.1:48354 -> 192.168.10.50:10626 proto 6, 2 packets in total
+      0.000000s  ->  len=44    flags=S
+      0.000052s  <-  len=40    flags=RA
+
+[PortScan] flow 278027: 172.16.0.1:53496 -> 192.168.10.50:2701 proto 6, 2 packets in total
+      0.000000s  ->  len=60    flags=S
+      0.000016s  <-  len=40    flags=RA
+
+[PortScan] flow 230457: 172.16.0.1:53430 -> 192.168.10.50:1801 proto 6, 2 packets in total
+      0.000000s  ->  len=44    flags=S
+      0.000044s  <-  len=40    flags=RA

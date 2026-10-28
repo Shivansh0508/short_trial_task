@@ -1,0 +1,715 @@
+{
+  "seed": 37,
+  "main_n": 4,
+  "tree_depth": 6,
+  "features_main": [
+    "n_pkts",
+    "n_fwd",
+    "n_bwd",
+    "len_fwd_sum",
+    "len_bwd_sum",
+    "len_min",
+    "len_max",
+    "pay_fwd_sum",
+    "pay_bwd_sum",
+    "syn",
+    "ack",
+    "fin",
+    "rst",
+    "psh",
+    "dur_us",
+    "iat_min_us",
+    "iat_max_us",
+    "proto",
+    "dst_port"
+  ],
+  "main_temporal": {
+    "n_train": 375654,
+    "n_test": 160995,
+    "train_counts": {
+      "BENIGN": 192473,
+      "PortScan": 112841,
+      "DDoS": 66978,
+      "Bot": 3362
+    },
+    "test_counts": {
+      "BENIGN": 82489,
+      "PortScan": 48360,
+      "DDoS": 28705,
+      "Bot": 1441
+    },
+    "tree": {
+      "precision": 0.9985455102197045,
+      "recall": 0.9969174330624411,
+      "false_positive_rate": 0.0013820024488113566,
+      "tp": 78264,
+      "fp": 114,
+      "fn": 242,
+      "tn": 82375,
+      "f1": 0.9977308074755871,
+      "recall_by_attack": {
+        "Bot": 0.8813324080499653,
+        "PortScan": 0.9985318444995864,
+        "DDoS": 1.0
+      }
+    },
+    "forest": {
+      "precision": 0.9999616779929488,
+      "recall": 0.9971339770208646,
+      "false_positive_rate": 3.63684854950357e-05,
+      "tp": 78281,
+      "fp": 3,
+      "fn": 225,
+      "tn": 82486,
+      "f1": 0.9985458256266344,
+      "recall_by_attack": {
+        "Bot": 0.8813324080499653,
+        "PortScan": 0.9989454094292805,
+        "DDoS": 0.9998954885908379
+      }
+    },
+    "tree_leaves": 33,
+    "tree_importance": {
+      "pay_fwd_sum": 0.9127,
+      "dur_us": 0.0669,
+      "dst_port": 0.0092,
+      "len_max": 0.0051,
+      "psh": 0.0041,
+      "iat_min_us": 0.001,
+      "fin": 0.0006,
+      "iat_max_us": 0.0002,
+      "len_fwd_sum": 0.0,
+      "n_bwd": 0.0,
+      "pay_bwd_sum": 0.0
+    }
+  },
+  "main_random": {
+    "n_train": 375654,
+    "n_test": 160995,
+    "train_counts": {
+      "BENIGN": 192473,
+      "PortScan": 112841,
+      "DDoS": 66978,
+      "Bot": 3362
+    },
+    "test_counts": {
+      "BENIGN": 82489,
+      "PortScan": 48360,
+      "DDoS": 28705,
+      "Bot": 1441
+    },
+    "tree": {
+      "precision": 0.9988420034612644,
+      "recall": 0.9998344075612056,
+      "false_positive_rate": 0.0011031773933494163,
+      "tp": 78493,
+      "fp": 91,
+      "fn": 13,
+      "tn": 82398,
+      "f1": 0.999337959131708,
+      "recall_by_attack": {
+        "Bot": 1.0,
+        "PortScan": 0.999731182795699,
+        "DDoS": 1.0
+      }
+    },
+    "forest": {
+      "precision": 0.9998980904701851,
+      "recall": 0.9998344075612056,
+      "false_positive_rate": 9.698262798676188e-05,
+      "tp": 78493,
+      "fp": 8,
+      "fn": 13,
+      "tn": 82481,
+      "f1": 0.9998662480016814,
+      "recall_by_attack": {
+        "Bot": 0.9972241498959056,
+        "PortScan": 0.9998138957816377,
+        "DDoS": 1.0
+      }
+    }
+  },
+  "leave_one_out": {
+    "Bot": {
+      "n_train": 372292,
+      "n_test": 87292,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "Bot": 4803
+      },
+      "tree": {
+        "precision": 0.9721115537848606,
+        "recall": 0.8128253175098896,
+        "false_positive_rate": 0.0013577567918146662,
+        "tp": 3904,
+        "fp": 112,
+        "fn": 899,
+        "tn": 82377,
+        "f1": 0.8853611520580564,
+        "recall_by_attack": {
+          "Bot": 0.8128253175098896
+        }
+      },
+      "forest": {
+        "precision": 0.9992305719415234,
+        "recall": 0.8111596918592546,
+        "false_positive_rate": 3.63684854950357e-05,
+        "tp": 3896,
+        "fp": 3,
+        "fn": 907,
+        "tn": 82486,
+        "f1": 0.8954263387726958,
+        "recall_by_attack": {
+          "Bot": 0.8111596918592546
+        }
+      }
+    },
+    "PortScan": {
+      "n_train": 262813,
+      "n_test": 243690,
+      "train_counts": {
+        "BENIGN": 192473,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "PortScan": 161201,
+        "BENIGN": 82489
+      },
+      "tree": {
+        "precision": 0.9998396263936467,
+        "recall": 0.966873654629934,
+        "false_positive_rate": 0.00030307071245863084,
+        "tp": 155861,
+        "fp": 25,
+        "fn": 5340,
+        "tn": 82464,
+        "f1": 0.9830803533415119,
+        "recall_by_attack": {
+          "PortScan": 0.966873654629934
+        }
+      },
+      "forest": {
+        "precision": 1.0,
+        "recall": 0.0001612893220265383,
+        "false_positive_rate": 0.0,
+        "tp": 26,
+        "fp": 0,
+        "fn": 161175,
+        "tn": 82489,
+        "f1": 0.0003225266239525638,
+        "recall_by_attack": {
+          "PortScan": 0.0001612893220265383
+        }
+      }
+    },
+    "DDoS": {
+      "n_train": 308676,
+      "n_test": 178172,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "DDoS": 95683,
+        "BENIGN": 82489
+      },
+      "tree": {
+        "precision": 0.7948717948717948,
+        "recall": 0.00032398649707889596,
+        "false_positive_rate": 9.698262798676188e-05,
+        "tp": 31,
+        "fp": 8,
+        "fn": 95652,
+        "tn": 82481,
+        "f1": 0.0006477089906186666,
+        "recall_by_attack": {
+          "DDoS": 0.00032398649707889596
+        }
+      },
+      "forest": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "false_positive_rate": 4.849131399338094e-05,
+        "tp": 0,
+        "fp": 4,
+        "fn": 95683,
+        "tn": 82485,
+        "f1": 0.0,
+        "recall_by_attack": {
+          "DDoS": 0.0
+        }
+      }
+    }
+  },
+  "ablation": {
+    "behaviour_only": {
+      "n_train": 375654,
+      "n_test": 160995,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "PortScan": 48360,
+        "DDoS": 28705,
+        "Bot": 1441
+      },
+      "tree": {
+        "precision": 0.9953339944567345,
+        "recall": 0.9972104043003083,
+        "false_positive_rate": 0.004449078058892701,
+        "tp": 78287,
+        "fp": 367,
+        "fn": 219,
+        "tn": 82122,
+        "f1": 0.996271315856452,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9990074441687344,
+          "DDoS": 1.0
+        }
+      },
+      "forest": {
+        "precision": 0.9991958233874982,
+        "recall": 0.9970957633811428,
+        "false_positive_rate": 0.0007637381953957497,
+        "tp": 78278,
+        "fp": 63,
+        "fn": 228,
+        "tn": 82426,
+        "f1": 0.9981446887731356,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9991315136476426,
+          "DDoS": 0.9994774429541892
+        }
+      }
+    },
+    "main_plus_fingerprint": {
+      "n_train": 375654,
+      "n_test": 160995,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "PortScan": 48360,
+        "DDoS": 28705,
+        "Bot": 1441
+      },
+      "tree": {
+        "precision": 0.9985976721357454,
+        "recall": 0.9977708710162281,
+        "false_positive_rate": 0.0013335111348179757,
+        "tp": 78331,
+        "fp": 110,
+        "fn": 175,
+        "tn": 82379,
+        "f1": 0.9981841003650914,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9999172870140612,
+          "DDoS": 1.0
+        }
+      },
+      "forest": {
+        "precision": 1.0,
+        "recall": 0.9977708710162281,
+        "false_positive_rate": 0.0,
+        "tp": 78331,
+        "fp": 0,
+        "fn": 175,
+        "tn": 82489,
+        "f1": 0.9988841918679904,
+        "recall_by_attack": {
+          "Bot": 0.8834142956280361,
+          "PortScan": 0.9999172870140612,
+          "DDoS": 0.9998954885908379
+        }
+      }
+    }
+  },
+  "sweep": {
+    "1": {
+      "n_train": 375654,
+      "n_test": 160995,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "PortScan": 48360,
+        "DDoS": 28705,
+        "Bot": 1441
+      },
+      "tree": {
+        "precision": 0.9391637714148796,
+        "recall": 0.9985478816905714,
+        "false_positive_rate": 0.0615597231145971,
+        "tp": 78392,
+        "fp": 5078,
+        "fn": 114,
+        "tn": 77411,
+        "f1": 0.9679458685237319,
+        "recall_by_attack": {
+          "Bot": 1.0,
+          "PortScan": 0.9976426799007444,
+          "DDoS": 1.0
+        }
+      },
+      "forest": {
+        "precision": 0.946178517397882,
+        "recall": 0.9958219753904161,
+        "false_positive_rate": 0.053910218332141255,
+        "tp": 78178,
+        "fp": 4447,
+        "fn": 328,
+        "tn": 78042,
+        "f1": 0.9703657272653928,
+        "recall_by_attack": {
+          "Bot": 1.0,
+          "PortScan": 0.9932795698924731,
+          "DDoS": 0.9998954885908379
+        }
+      }
+    },
+    "2": {
+      "n_train": 375654,
+      "n_test": 160995,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "PortScan": 48360,
+        "DDoS": 28705,
+        "Bot": 1441
+      },
+      "tree": {
+        "precision": 0.99659512605685,
+        "recall": 0.9954653147530125,
+        "false_positive_rate": 0.0032367952090581777,
+        "tp": 78150,
+        "fp": 267,
+        "fn": 356,
+        "tn": 82222,
+        "f1": 0.996029900014657,
+        "recall_by_attack": {
+          "Bot": 0.878556557945871,
+          "PortScan": 0.9968155500413565,
+          "DDoS": 0.9990593973175405
+        }
+      },
+      "forest": {
+        "precision": 0.9991312679655062,
+        "recall": 0.9961913739077268,
+        "false_positive_rate": 0.0008243523378874759,
+        "tp": 78207,
+        "fp": 68,
+        "fn": 299,
+        "tn": 82421,
+        "f1": 0.9976591551272157,
+        "recall_by_attack": {
+          "Bot": 0.8834142956280361,
+          "PortScan": 0.9982630272952854,
+          "DDoS": 0.9983626545897927
+        }
+      }
+    },
+    "3": {
+      "n_train": 375654,
+      "n_test": 160995,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "PortScan": 48360,
+        "DDoS": 28705,
+        "Bot": 1441
+      },
+      "tree": {
+        "precision": 0.9844766448123676,
+        "recall": 0.9831223091228696,
+        "false_positive_rate": 0.014753482282486149,
+        "tp": 77181,
+        "fp": 1217,
+        "fn": 1325,
+        "tn": 81272,
+        "f1": 0.9837990108601438,
+        "recall_by_attack": {
+          "Bot": 0.8834142956280361,
+          "PortScan": 0.9921422663358147,
+          "DDoS": 0.9729315450269987
+        }
+      },
+      "forest": {
+        "precision": 0.9912088475388617,
+        "recall": 0.9852367971874761,
+        "false_positive_rate": 0.00831626034986483,
+        "tp": 77347,
+        "fp": 686,
+        "fn": 1159,
+        "tn": 81803,
+        "f1": 0.9882137997559713,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9998552522746071,
+          "DDoS": 0.9658247692039714
+        }
+      }
+    },
+    "4": {
+      "n_train": 375654,
+      "n_test": 160995,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "PortScan": 48360,
+        "DDoS": 28705,
+        "Bot": 1441
+      },
+      "tree": {
+        "precision": 0.9985455102197045,
+        "recall": 0.9969174330624411,
+        "false_positive_rate": 0.0013820024488113566,
+        "tp": 78264,
+        "fp": 114,
+        "fn": 242,
+        "tn": 82375,
+        "f1": 0.9977308074755871,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9985318444995864,
+          "DDoS": 1.0
+        }
+      },
+      "forest": {
+        "precision": 0.9999616779929488,
+        "recall": 0.9971339770208646,
+        "false_positive_rate": 3.63684854950357e-05,
+        "tp": 78281,
+        "fp": 3,
+        "fn": 225,
+        "tn": 82486,
+        "f1": 0.9985458256266344,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9989454094292805,
+          "DDoS": 0.9998954885908379
+        }
+      }
+    },
+    "6": {
+      "n_train": 375654,
+      "n_test": 160995,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "PortScan": 48360,
+        "DDoS": 28705,
+        "Bot": 1441
+      },
+      "tree": {
+        "precision": 0.9985579561261342,
+        "recall": 0.9967136269839248,
+        "false_positive_rate": 0.0013698796203130115,
+        "tp": 78248,
+        "fp": 113,
+        "fn": 258,
+        "tn": 82376,
+        "f1": 0.9976349391522754,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9986559139784946,
+          "DDoS": 0.9992335829994774
+        }
+      },
+      "forest": {
+        "precision": 0.9999488811358611,
+        "recall": 0.996675413344203,
+        "false_positive_rate": 4.849131399338094e-05,
+        "tp": 78245,
+        "fp": 4,
+        "fn": 261,
+        "tn": 82485,
+        "f1": 0.9983094638129565,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9985938792390405,
+          "DDoS": 0.9992335829994774
+        }
+      }
+    },
+    "8": {
+      "n_train": 375654,
+      "n_test": 160995,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "PortScan": 48360,
+        "DDoS": 28705,
+        "Bot": 1441
+      },
+      "tree": {
+        "precision": 0.9969340827797649,
+        "recall": 0.994064147963213,
+        "false_positive_rate": 0.002909478839602856,
+        "tp": 78040,
+        "fp": 240,
+        "fn": 466,
+        "tn": 82249,
+        "f1": 0.9954970469302106,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9938999172870141,
+          "DDoS": 1.0
+        }
+      },
+      "forest": {
+        "precision": 0.999961661341853,
+        "recall": 0.9967008891040176,
+        "false_positive_rate": 3.63684854950357e-05,
+        "tp": 78247,
+        "fp": 3,
+        "fn": 259,
+        "tn": 82486,
+        "f1": 0.9983286126208885,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9986145574855252,
+          "DDoS": 0.9992684201358648
+        }
+      }
+    },
+    "12": {
+      "n_train": 375654,
+      "n_test": 160995,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "PortScan": 48360,
+        "DDoS": 28705,
+        "Bot": 1441
+      },
+      "tree": {
+        "precision": 0.9980746426613284,
+        "recall": 0.9970702876213283,
+        "false_positive_rate": 0.0018305471032501303,
+        "tp": 78276,
+        "fp": 151,
+        "fn": 230,
+        "tn": 82338,
+        "f1": 0.9975722123453958,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9987799834574028,
+          "DDoS": 1.0
+        }
+      },
+      "forest": {
+        "precision": 1.0,
+        "recall": 0.9966881512241103,
+        "false_positive_rate": 0.0,
+        "tp": 78246,
+        "fp": 0,
+        "fn": 260,
+        "tn": 82489,
+        "f1": 0.9983413289782586,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9986145574855252,
+          "DDoS": 0.9992335829994774
+        }
+      }
+    },
+    "16": {
+      "n_train": 375654,
+      "n_test": 160995,
+      "train_counts": {
+        "BENIGN": 192473,
+        "PortScan": 112841,
+        "DDoS": 66978,
+        "Bot": 3362
+      },
+      "test_counts": {
+        "BENIGN": 82489,
+        "PortScan": 48360,
+        "DDoS": 28705,
+        "Bot": 1441
+      },
+      "tree": {
+        "precision": 0.9987449574181981,
+        "recall": 0.9933890403281278,
+        "false_positive_rate": 0.001188037192837833,
+        "tp": 77987,
+        "fp": 98,
+        "fn": 519,
+        "tn": 82391,
+        "f1": 0.9960597990944563,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9930107526881721,
+          "DDoS": 0.9996516286361261
+        }
+      },
+      "forest": {
+        "precision": 0.9999616608518959,
+        "recall": 0.9966881512241103,
+        "false_positive_rate": 3.63684854950357e-05,
+        "tp": 78246,
+        "fp": 3,
+        "fn": 260,
+        "tn": 82486,
+        "f1": 0.9983222225766324,
+        "recall_by_attack": {
+          "Bot": 0.8813324080499653,
+          "PortScan": 0.9986145574855252,
+          "DDoS": 0.9992335829994774
+        }
+      }
+    }
+  }
+}
