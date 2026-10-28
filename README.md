@@ -1,5 +1,5 @@
 # Short trial task, Track B: detecting attacks from the first packets of a flow
-> @Notes from AI
+>  @Notes from AI
 
 SOP trial task, Track B (network security and intrusion/DDoS detection). The goal is to separate attack
 traffic from benign traffic in the CIC-IDS2017 dataset using only features that a network switch could
@@ -61,20 +61,24 @@ Dataset and Intrusion Traffic Characterization", ICISSP 2018.
 ## Repository layout
 
 ```
-├── README.md               this file
-├── notes.md                how the three attacks differ in their first packets; why CIC's labels were not used as-is
-├── AI_USAGE.md             log of what the AI assistant did and what was checked by hand
-├── COMMANDS.md             every command exactly as it was run, in order
-├── requirements.txt        pinned Python packages
-├── Dataset Extraction/     raw capture → labelled flow dataset (6 scripts; see its README)
-├── Classification/         features, training, evaluation and diagnostics (2 scripts; see its README)
-├── datasets/               the processed dataset (2 parquet files; see its README)
-└── results/                raw outputs
-    ├── logs/               printed output of every run
-    ├── metrics.json        every score from train_eval.py
-    ├── tree_main_N4.txt    the main decision tree as if/else rules
-    ├── label_check_per_minute.csv, figures/label_check.png   label cross-check against CIC
-    └── sample_flows.pcap, sample_flows.txt                    12 example flows for Wireshark
+├── README.md                     this file
+├── notes.md                      how the three attacks differ in their first packets; why CIC's labels were not used as-is
+├── Dataset Extraction/           raw capture → labelled flow dataset (see its README)
+│   ├── README.md
+│   ├── check_duplicates.py
+│   ├── extract_first.py
+│   ├── labels_flows.py
+│   ├── check_labels.py
+│   ├── check_cic_label_by_pairs.py
+│   └── make_sample_pcap.py
+├── Classification/               features, training, evaluation and diagnostics (see its README)
+│   ├── README.md
+│   ├── train_eval.py
+│   └── inspect_results.py
+└── datasets/                     the processed dataset (see its README)
+    ├── README.md
+    ├── friday_labelled.parquet   one row per flow, with its label (536,656 flows)
+    └── friday_packets.parquet    the first 16 packets of each flow (3,282,716 packets)
 ```
 
 ## Pipeline
@@ -95,7 +99,7 @@ Dataset and Intrusion Traffic Characterization", ICISSP 2018.
 Python 3.11. Commands are for Git Bash (or any Linux/macOS shell), run from the repository root.
 
 ```bash
-pip install -r requirements.txt
+pip install dpkt==1.9.8 numpy==2.4.6 pandas==3.1.0 pyarrow==26.0.0 scikit-learn==1.9.1 matplotlib==3.11.2
 ```
 
 **Classification only (no download needed).** The two files in `datasets/` are enough:
@@ -105,9 +109,11 @@ python Classification/train_eval.py datasets/friday_labelled.parquet datasets/fr
 python Classification/inspect_results.py datasets/friday_labelled.parquet datasets/friday_packets.parquet
 ```
 
-The first command takes about a minute and rewrites `results/metrics.json` and `results/tree_main_N4.txt`
-with identical contents. For a quick variation, add `--sweep 4` and change one setting such as `--depth 4`
-or `--main-n 8`, with `--out` pointing to a new folder.
+The first command takes about a minute. It writes `results/metrics.json` (every score) and
+`results/tree_main_N4.txt` (the main tree as if/else rules), creating the `results/` folder if needed.
+The second prints the diagnostics and reads `results/metrics.json`. For a quick variation, add
+`--sweep 4` and change one setting such as `--depth 4` or `--main-n 8`, with `--out` pointing to a new
+folder.
 
 **Full pipeline from the raw capture:**
 
@@ -132,12 +138,9 @@ python "Dataset Extraction/make_sample_pcap.py" data/raw/Friday-WorkingHours.pca
 ```
 
 Then run the two classification commands above. `extract_first.py` and `make_sample_pcap.py` read the
-whole capture and take a few minutes each.
-
-**About the logs.** The files in `results/logs/` were produced by the first version of each script, run
-with the scripts in `src/` and the data in `data/interim/`; [COMMANDS.md](COMMANDS.md) lists those
-commands exactly. The scripts in this repository are simplified rewrites, checked to produce the same data
-files and the same numbers. A few progress messages are worded differently.
+whole capture and take a few minutes each. These steps rebuild the two files in `datasets/` with the same
+contents, add `datasets/friday_flows.parquet`, and save the label cross-check and the sample capture in
+`results/`.
 
 ## Limitations
 
@@ -156,6 +159,6 @@ files and the same numbers. A few progress messages are worded differently.
 ## Use of AI tools
 
 An AI coding assistant (Claude Code, by Anthropic) was used to write the scripts in `Dataset Extraction/`
-and `Classification/`, run the experiments, and draft this README and the two folder READMEs. The scripts
-were later rewritten in a simpler style, and each rewrite was checked to give the same results.
-[AI_USAGE.md](AI_USAGE.md) logs what the AI did and what was decided or checked by hand.
+and `Classification/`, run the experiments, draft this README and the two folder READMEs, and help write
+`notes.md`. The scripts were later rewritten in a simpler style, and each rewrite was checked to give the
+same results.
