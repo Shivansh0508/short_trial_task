@@ -8,6 +8,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier, export_text
 
+ATTACKS = ["Bot", "PortScan", "DDoS"]
+BEHAVIOUR = ["n_pkts", "n_fwd", "n_bwd", "len_fwd_sum", "len_bwd_sum", "len_min", "len_max", "pay_fwd_sum", "pay_bwd_sum", "syn", "ack", "fin", "rst", "psh", "dur_us", "iat_min_us", "iat_max_us"]
+PORT = ["proto", "dst_port"]
+FINGERPRINT = ["ttl_fwd_first", "win_fwd_first", "win_bwd_first"]
+MAIN_FEATURES = BEHAVIOUR + PORT
+
 #AI
 def first_n_features(flows, packets, n):
     p = packets[packets["idx"] < n]
