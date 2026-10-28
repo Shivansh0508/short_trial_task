@@ -19,3 +19,20 @@ Notes: understanding the pipeline
 - The spreadsheet's numbers are computed over whole connections, and its tool cuts traffic into connections differently (about 159,000 rows vs our 95,683 DDoS connections), so its labels can't be copied one-to-one.
 
 **So:** labels were re-applied from CIC's published attack schedule, and the spreadsheet was used only as a cross-check.
+
+## Step 3: Two surprises in the raw capture
+
+- The file is named `.pcap` but is really **pcapng**. The first attempt to read it failed with "invalid tcpdump header", and the first bytes of the file showed the pcapng signature.
+- Some packets were recorded **twice**. In the first 300,000 packets, **6.5%** are exact copies, usually **4 µs** after the original and with the same TTL. A router would lower the TTL, so the copies come from the capture setup, not from the network. They appear only between machines inside the office network, where about half of all packets are copies.
+- A switch would see each packet once, so copies that arrive within 1 ms are dropped: **413,907** packets over the whole day.
+
+**Takeaway:** check the raw data before trusting it. Without this step, connections inside the office network would show twice as many packets as they really have.
+
+## Step 4: From packets to connections
+
+- A **connection** (flow) is all packets between the same two endpoints (IP address and port) with the same protocol, in either direction. The machine that sends the first packet is the initiator.
+- A connection ends after **120 s** of silence, or when a new SYN arrives after it was closed with FIN or RST.
+- Only the header fields of the **first 16 packets** of each connection are kept; later packets are just counted. A switch has to decide early and has little memory per connection, so the detector may only look at the start.
+- Result: **9,997,874** packets became **536,656** connections and **3,282,716** stored packets.
+
+**Takeaway:** everything after this point works on connections and their first few packets, never on whole conversations.
