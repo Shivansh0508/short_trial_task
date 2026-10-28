@@ -36,3 +36,19 @@ Notes: understanding the pipeline
 - Result: **9,997,874** packets became **536,656** connections and **3,282,716** stored packets.
 
 **Takeaway:** everything after this point works on connections and their first few packets, never on whole conversations.
+
+## Step 5: What the detector looks at, and how it is tested
+
+- **Features** come from the first N packets of a connection (N = 4 in the main setting): how many packets go each way, their sizes, payload bytes each way, how many carry SYN, ACK, FIN, RST or PSH, the duration and the gaps between packets, plus the protocol and destination port. A switch can keep all of these in a few counters: nothing reads the payload and nothing needs division.
+- **Model:** a decision tree of depth 6, small enough to turn into a switch's match-action table. A random forest of 100 trees is trained too, only to see how much a much bigger model would gain.
+- **Testing:** within each label, the earliest 70% of connections are used for training and the latest 30% for testing. A random split would put near-identical connections from the same burst on both sides and inflate the scores: Bot recall jumps from 0.881 to 1.000.
+
+**Takeaway:** the test is deliberately strict. The model is always tested on a later part of each attack than it trained on.
+
+## Step 6: Results
+
+- Main tree (N = 4): precision **0.9985**, recall **0.9969**, false-positive rate **0.138%**. Recall per attack: Bot 0.881, PortScan 0.999, DDoS 1.000.
+- The forest catches the same share of attacks but raises far fewer false alarms (0.004%).
+- One feature does almost all the work: **payload bytes sent by the initiator** (importance 0.91). 98.6% of DDoS connections send exactly 20 bytes, while 99.9% of port-scan and 84.7% of Bot connections send none. That is the difference already visible in Step 1.
+
+**Takeaway:** the tree mostly learned "how much data did the initiator send in its first 4 packets?"
