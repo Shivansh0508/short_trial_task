@@ -1,7 +1,5 @@
-# Short_trial_task
-Track B: Network security and intrusion or DDoS detection
-
 # Short trial task, Track B: detecting attacks from the first packets of a flow
+> @Notes from AI
 
 SOP trial task, Track B (network security and intrusion/DDoS detection). The goal is to separate attack
 traffic from benign traffic in the CIC-IDS2017 dataset using only features that a network switch could
