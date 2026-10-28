@@ -52,3 +52,19 @@ Notes: understanding the pipeline
 - One feature does almost all the work: **payload bytes sent by the initiator** (importance 0.91). 98.6% of DDoS connections send exactly 20 bytes, while 99.9% of port-scan and 84.7% of Bot connections send none. That is the difference already visible in Step 1.
 
 **Takeaway:** the tree mostly learned "how much data did the initiator send in its first 4 packets?"
+
+## Step 7: How many packets are needed
+
+- With **1 packet**, 6.2% of benign connections are flagged. With **2**, the results are already good. From **4** on, they barely change.
+- **3 packets are worse than 2.** The first three packets of any TCP connection are the handshake (SYN, SYN-ACK, ACK), so a normal web visit and a DDoS connection look the same. False alarms jump from 267 to 1,217, mostly on port 80. It is not a change over time: DDoS recall is similar in every part of the test period, and DDoS durations look the same in training and test. At 4 packets, LOIC's 20-byte request separates them again.
+- Going higher has a hidden cost. The capture machine merged TCP segments into "packets" larger than 1,500 bytes, which a switch never sees. They are rare in the first 4 packets (0.5% of connections at most) but appear in 99.98% of DDoS connections by packet 16.
+
+**Takeaway:** N = 4 is the first setting that gets past the handshake, and it is still early enough to avoid the capture artefacts.
+
+## Step 8: Where the detector fails
+
+- **An attack it has never seen.** Trained without DDoS, the tree catches none of the DDoS connections (recall 0.000); trained without Bot, it catches 0.81 of Bot. An unseen PortScan is still caught by the tree (0.967) but not by the forest (0.000).
+- **A known attack behaving a little differently.** The tree misses 171 of the 1,441 Bot test connections. 159 of them are three-packet connections where every packet carries SYN and none carries RST, which looks like a retried connection attempt. The tree learned the usual SYN followed by RST from Step 1.
+- **Real networks have far fewer attacks.** About half of the test set is attacks. With the same recall and false-positive rate, precision would be 0.879 if 1% of connections were attacks, and 0.419 at 0.1%, so more than half of the alarms would be false.
+
+**Takeaway:** the detector recognises the attacks it was trained on, as they behaved on this one day. It is not a general attack detector.
