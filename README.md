@@ -57,6 +57,7 @@ All experiments and numbers are in [Classification/README.md](Classification/REA
 
 Citation: I. Sharafaldin, A. H. Lashkari, A. A. Ghorbani, "Toward Generating a New Intrusion Detection
 Dataset and Intrusion Traffic Characterization", ICISSP 2018.
+
 ## Repository layout
 
 ```
@@ -79,7 +80,8 @@ Dataset and Intrusion Traffic Characterization", ICISSP 2018.
 │   ├── friday_labelled.parquet   one row per flow, with its label (536,656 flows)
 │   └── friday_packets.parquet    the first 16 packets of each flow (3,282,716 packets)
 └── results/
-    └── logs/                     raw outputs of every run, in pipeline order
+    └── logs/                     raw outputs of every run, in pipeline order (see its README)
+        ├── README.md                        what each file is and how to read it
         ├── sha256_friday_pcap.txt           SHA-256 of the downloaded capture
         ├── check_duplicates_first300k.log   check_duplicates.py, first 300,000 packets
         ├── extract_friday.log               extract_first.py
