@@ -79,7 +79,7 @@ Dataset and Intrusion Traffic Characterization", ICISSP 2018.
 │   ├── friday_labelled.parquet   one row per flow, with its label (536,656 flows)
 │   └── friday_packets.parquet    the first 16 packets of each flow (3,282,716 packets)
 └── results/
-    └── logs/                     printed output of every run, in pipeline order
+    └── logs/                     raw outputs of every run, in pipeline order
         ├── sha256_friday_pcap.txt           SHA-256 of the downloaded capture
         ├── check_duplicates_first300k.log   check_duplicates.py, first 300,000 packets
         ├── extract_friday.log               extract_first.py
@@ -87,7 +87,11 @@ Dataset and Intrusion Traffic Characterization", ICISSP 2018.
         ├── check_labels.log                 check_labels.py
         ├── check_cic_labels_by_pair.log     check_cic_label_by_pairs.py
         ├── make_sample_pcap.log             make_sample_pcap.py
+        ├── sample_flows.pcap                12 example flows (3 per label) for Wireshark, from make_sample_pcap.py
+        ├── sample_flows.txt                 the same packets as text
         ├── train_eval.log                   train_eval.py
+        ├── metrics.json                     every score from train_eval.py
+        ├── tree_main_N4.txt                 the main decision tree as if/else rules, from train_eval.py
         └── inspect_results.log              inspect_results.py
 ```
 
