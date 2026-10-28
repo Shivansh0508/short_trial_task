@@ -1,0 +1,10 @@
+format: pcapng
+     2,000,000 packets      10,347 flows       25s  (80,863 pkt/s)
+     4,000,000 packets      44,575 flows       49s  (82,252 pkt/s)
+     6,000,000 packets     148,547 flows       64s  (94,315 pkt/s)
+     8,000,000 packets     399,267 flows       72s  (111,295 pkt/s)
+done: 9,997,874 packets read in 81s (123,583 pkt/s)
+      536,656 flows, 3,282,716 packets kept (first 16 per flow)
+      skipped: {'non_ipv4': 82194, 'not_tcp_udp': 1144, 'ip_fragment': 196, 'truncated': 0, 'capture_duplicate': 413907}
+      capture time range (UTC): 2017-07-07 11:59:39.599128008 -> 2017-07-07 20:02:41.169107914
+wrote data\interim\friday_flows.parquet and data\interim\friday_packets.parquet

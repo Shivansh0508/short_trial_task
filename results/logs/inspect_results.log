@@ -1,0 +1,42 @@
+1. forward payload bytes in the first 4 packets: most common values per class (share of flows)
+   BENIGN    32 B: 4.0%, 0 B: 3.6%, 517 B: 3.1%, 44 B: 2.7%
+   Bot       0 B: 84.7%, 195 B: 6.8%, 194 B: 2.8%, 198 B: 2.2%
+   DDoS      20 B: 98.6%, 0 B: 1.4%
+   PortScan  0 B: 99.9%, 18 B: 0.0%, 168 B: 0.0%, 62 B: 0.0%
+
+2. flows with a >1500-byte packet (receive-offload artifact) among their first N packets
+   N=4  BENIGN: 0.50%  Bot: 0.29%  DDoS: 0.00%  PortScan: 0.00%
+   N=16 BENIGN: 10.52%  Bot: 1.08%  DDoS: 99.98%  PortScan: 0.05%
+
+3. Bot test flows: caught vs missed by the main tree (N=4)
+   caught: 1,270 flows; most common shapes:
+      1,270  pkts=2 syn=1 rst=1 pay_fwd=0 port=8080
+   missed: 171 flows; most common shapes:
+        159  pkts=3 syn=3 rst=0 pay_fwd=0 port=8080
+         10  pkts=2 syn=1 rst=1 pay_fwd=0 port=8080
+          2  pkts=4 syn=3 rst=1 pay_fwd=0 port=8080
+
+4. N=2 vs N=3 vs N=4: DDoS recall over the DDoS test period (in 5 equal time slices), and top tree splits
+   N=2: DDoS recall by time slice [0.999 0.998 1.000 0.999 0.999]  top splits: [('dur_us', 113.5), ('len_max', 62.0), ('len_bwd_sum', 56.0), ('pay_fwd_sum', 2.0)]
+   N=3: DDoS recall by time slice [0.960 0.967 0.979 0.976 0.983]  top splits: [('len_min', 44.5), ('dur_us', 22062.5), ('iat_max_us', 14985.5), ('dst_port', 22.5)]
+   N=4: DDoS recall by time slice [1.000 1.000 1.000 1.000 1.000]  top splits: [('pay_fwd_sum', 21.0), ('dur_us', 49630.5), ('len_max', 62.0), ('dst_port', 22.5)]
+   DDoS dur_us quantiles at N=2 (train vs test):
+        0.1   0.5    0.9
+      train                   
+      test   16.0  54.0  142.0
+      train  16.0  54.0  143.0
+   DDoS dur_us quantiles at N=3 (train vs test):
+         0.1     0.5      0.9
+      train                        
+      test   587.0  1812.0  24391.0
+      train  592.0  1842.0  24403.0
+   N=2: 267 benign false positives; top dst ports {445: 53, 389: 38, 22: 22, 88: 20}
+        top shapes {'pkts=2 fwd=1 syn=2 ack=1 rst=0 len_min=52': 229, 'pkts=2 fwd=1 syn=2 ack=1 rst=0 len_min=60': 27}
+   N=3: 1,217 benign false positives; top dst ports {80: 974, 445: 53, 389: 38, 88: 20}
+        top shapes {'pkts=3 fwd=2 syn=2 ack=2 rst=0 len_min=40': 1206, 'pkts=3 fwd=1 syn=0 ack=3 rst=0 len_min=40': 4}
+
+5. precision of the main tree if attacks were rarer (same recall and false-positive rate)
+   attack share  50.0%: precision 0.999
+   attack share  10.0%: precision 0.988
+   attack share   1.0%: precision 0.879
+   attack share   0.1%: precision 0.419

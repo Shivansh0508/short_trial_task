@@ -1,0 +1,29 @@
+536,649 flows (UNCLEAR dropped): {'BENIGN': 274962, 'PortScan': 161201, 'DDoS': 95683, 'Bot': 4803}
+
+[1] main: N=4, temporal split
+    tree P=0.9985 R=0.9969 FPR=0.00138 [Bot=0.881 PortScan=0.999 DDoS=1.000] | forest P=1.0000 R=0.9971 FPR=0.00004
+    tree: 33 leaves; importance: pay_fwd_sum=0.913, dur_us=0.067, dst_port=0.009, len_max=0.005, psh=0.004, iat_min_us=0.001, fin=0.001, iat_max_us=0.000, len_fwd_sum=0.000, n_bwd=0.000, pay_bwd_sum=0.000
+
+[2] random stratified split, N=4
+    tree P=0.9988 R=0.9998 FPR=0.00110 [Bot=1.000 PortScan=1.000 DDoS=1.000] | forest P=0.9999 R=0.9998 FPR=0.00010
+
+[3] leave one attack out, N=4 (train: benign + other attacks; test: benign + held-out attack)
+    held out Bot      tree P=0.9721 R=0.8128 FPR=0.00136 [Bot=0.813] | forest P=0.9992 R=0.8112 FPR=0.00004
+    held out PortScan tree P=0.9998 R=0.9669 FPR=0.00030 [PortScan=0.967] | forest P=1.0000 R=0.0002 FPR=0.00000
+    held out DDoS     tree P=0.7949 R=0.0003 FPR=0.00010 [DDoS=0.000] | forest P=0.0000 R=0.0000 FPR=0.00005
+
+[4] feature ablation, N=4, temporal split
+    behaviour_only         tree P=0.9953 R=0.9972 FPR=0.00445 [Bot=0.881 PortScan=0.999 DDoS=1.000] | forest P=0.9992 R=0.9971 FPR=0.00076
+    main_plus_fingerprint  tree P=0.9986 R=0.9978 FPR=0.00133 [Bot=0.881 PortScan=1.000 DDoS=1.000] | forest P=1.0000 R=0.9978 FPR=0.00000
+
+[5] sweep over N, temporal split
+    N=1   tree P=0.9392 R=0.9985 FPR=0.06156 [Bot=1.000 PortScan=0.998 DDoS=1.000] | forest P=0.9462 R=0.9958 FPR=0.05391
+    N=2   tree P=0.9966 R=0.9955 FPR=0.00324 [Bot=0.879 PortScan=0.997 DDoS=0.999] | forest P=0.9991 R=0.9962 FPR=0.00082
+    N=3   tree P=0.9845 R=0.9831 FPR=0.01475 [Bot=0.883 PortScan=0.992 DDoS=0.973] | forest P=0.9912 R=0.9852 FPR=0.00832
+    N=4   tree P=0.9985 R=0.9969 FPR=0.00138 [Bot=0.881 PortScan=0.999 DDoS=1.000] | forest P=1.0000 R=0.9971 FPR=0.00004
+    N=6   tree P=0.9986 R=0.9967 FPR=0.00137 [Bot=0.881 PortScan=0.999 DDoS=0.999] | forest P=0.9999 R=0.9967 FPR=0.00005
+    N=8   tree P=0.9969 R=0.9941 FPR=0.00291 [Bot=0.881 PortScan=0.994 DDoS=1.000] | forest P=1.0000 R=0.9967 FPR=0.00004
+    N=12  tree P=0.9981 R=0.9971 FPR=0.00183 [Bot=0.881 PortScan=0.999 DDoS=1.000] | forest P=1.0000 R=0.9967 FPR=0.00000
+    N=16  tree P=0.9987 R=0.9934 FPR=0.00119 [Bot=0.881 PortScan=0.993 DDoS=1.000] | forest P=1.0000 R=0.9967 FPR=0.00004
+
+wrote results\metrics.json  (80s)

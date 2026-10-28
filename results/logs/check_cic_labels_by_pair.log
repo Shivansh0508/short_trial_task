@@ -1,0 +1,20 @@
+
+=== Friday-WorkingHours-Morning.pcap_ISCX.csv
+  bot victim <-> 205.174.165.73 flows by CIC label: {'Bot': 1962}
+    dst ports of Bot-labelled: {8080: 1257, 1841: 1, 1845: 1}
+  172.16.0.1 <-> 192.168.10.50 flows by CIC label: {'BENIGN': 14}
+    BENIGN-labelled ones, top minutes (12h clock): {'11:47': 5, '11:53': 5, '11:48': 1, '11:54': 1, '12:37': 1, '12:38': 1}
+
+=== Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv
+  bot victim <-> 205.174.165.73 flows by CIC label: {'BENIGN': 350}
+    BENIGN-labelled ones: time range 7/7/2017 3:30 ... 7/7/2017 5:01 | dst ports: {8080: 350}
+    dst ports of Bot-labelled: {}
+  172.16.0.1 <-> 192.168.10.50 flows by CIC label: {'DDoS': 128027, 'BENIGN': 31340}
+    BENIGN-labelled ones, top minutes (12h clock): {'4:10': 2022, '4:06': 1990, '4:11': 1896, '4:15': 1866, '4:13': 1838, '4:07': 1813, '4:14': 1742, '4:12': 1733}
+
+=== Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv
+  bot victim <-> 205.174.165.73 flows by CIC label: {'BENIGN': 623}
+    BENIGN-labelled ones: time range 7/7/2017 1:01 ... 7/7/2017 3:29 | dst ports: {8080: 616, 53709: 1, 53710: 1}
+    dst ports of Bot-labelled: {}
+  172.16.0.1 <-> 192.168.10.50 flows by CIC label: {'PortScan': 158930, 'BENIGN': 960}
+    BENIGN-labelled ones, top minutes (12h clock): {'2:55': 229, '2:52': 221, '2:54': 186, '3:08': 60, '2:51': 54, '3:23': 49, '3:22': 47, '3:09': 33}

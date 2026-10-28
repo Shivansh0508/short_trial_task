@@ -1,0 +1,20 @@
+536,656 flows, local time 08:59:50 -> 17:02:40
+           flows     first      last  median_pkts
+label                                            
+BENIGN    274962  08:59:50  17:02:40          2.0
+Bot         4803  10:04:13  17:01:12          2.0
+DDoS       95683  15:56:31  16:16:10         13.0
+PortScan  161201  13:05:33  15:23:53          2.0
+UNCLEAR        7  11:47:47  12:37:57         13.0
+
+172.16.0.1 <-> 192.168.10.50 flows by local hour:
+hour  label   
+11    UNCLEAR          6
+12    UNCLEAR          1
+13    PortScan       182
+14    PortScan    140508
+15    DDoS         16011
+      PortScan     20511
+16    DDoS         79672
+
+wrote data\interim\friday_labelled.parquet
